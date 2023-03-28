@@ -13,7 +13,7 @@ interface Task {
 export function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete] = useState(false);
 
   function handleCreateNewTask() {
     // Crie uma nova task com um id random, não permita criar caso o título seja vazio.
@@ -29,7 +29,14 @@ export function TaskList() {
 
   function handleToggleTaskCompletion(id: number) {
     // Altere entre `true` ou `false` o campo `isComplete` de uma task com dado ID
-    setIsComplete(!tasks[id].isComplete);
+    setTasks(
+      tasks.map((task) => {
+        if (task.id === id) {
+          return { ...task, isComplete: !task.isComplete };
+        }
+        return task;
+      })
+    );
   }
 
   function handleRemoveTask(id: number) {
